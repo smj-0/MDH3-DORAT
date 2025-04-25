@@ -1,12 +1,31 @@
-document.getElementById('actionButton').addEventListener('click', () => {
-  alert('Button clicked!');
+document.addEventListener('DOMContentLoaded', () => {
+  setupTabs();
+  fetchLaunchData();
 });
 
-// Fetch recent, upcoming, and all launches from the SpaceX API
+// Setup tab switching
+function setupTabs() {
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      // Remove active class from all buttons and contents
+      tabButtons.forEach((btn) => btn.classList.remove('active'));
+      tabContents.forEach((content) => content.classList.remove('active'));
+
+      // Add active class to the clicked button and corresponding content
+      button.classList.add('active');
+      const tabId = button.getAttribute('data-tab');
+      document.getElementById(tabId).classList.add('active');
+    });
+  });
+}
+
+// Fetch recent and upcoming launches from the Launch Library 2 API
 async function fetchLaunchData() {
-  const upcomingApiUrl = 'https://api.spacexdata.com/v4/launches/upcoming';
-  const recentApiUrl = 'https://api.spacexdata.com/v4/launches/past';
-  const allApiUrl = 'https://api.spacexdata.com/v4/launches';
+  const upcomingApiUrl = 'https://llapi.thespacedevs.com/2.2.0/launch/upcoming/?limit=5';
+  const recentApiUrl = 'https://llapi.thespacedevs.com/2.2.0/launch/previous/?limit=5';
 
   try {
     // Fetch upcoming launches
@@ -15,7 +34,7 @@ async function fetchLaunchData() {
       throw new Error(`HTTP error! status: ${upcomingResponse.status}`);
     }
     const upcomingData = await upcomingResponse.json();
-    const upcomingLaunches = upcomingData.slice(0, 5); // Get the next 5 launches
+    const upcomingLaunches = upcomingData.results;
 
     // Fetch recent launches
     const recentResponse = await fetch(recentApiUrl);
@@ -23,19 +42,11 @@ async function fetchLaunchData() {
       throw new Error(`HTTP error! status: ${recentResponse.status}`);
     }
     const recentData = await recentResponse.json();
-    const recentLaunches = recentData.slice(-5); // Get the last 5 launches
-
-    // Fetch all launches
-    const allResponse = await fetch(allApiUrl);
-    if (!allResponse.ok) {
-      throw new Error(`HTTP error! status: ${allResponse.status}`);
-    }
-    const allData = await allResponse.json();
+    const recentLaunches = recentData.results;
 
     // Display the launches
     displayLaunchData(recentLaunches, 'recent');
     displayLaunchData(upcomingLaunches, 'upcoming');
-    displayLaunchData(allData, 'all');
   } catch (error) {
     console.error('Error fetching launch data:', error);
     document.getElementById('columns').innerHTML = `<p>Failed to load launch data: ${error.message}</p>`;
@@ -52,40 +63,10 @@ function displayLaunchData(launches, containerId) {
     launchElement.className = 'launch';
     launchElement.innerHTML = `
       <h3>${launch.name}</h3>
-      <p><strong>NET:</strong> ${new Date(launch.date_utc).toLocaleString()}</p>
-      <p><strong>Rocket:</strong> ${launch.rocket}</p>
-      <p><strong>Launch Pad:</strong> ${launch.launchpad}</p>
+      <p><strong>NET:</strong> ${new Date(launch.net).toLocaleString()}</p>
+      <p><strong>Rocket:</strong> ${launch.rocket.configuration.name}</p>
+      <p><strong>Launch Pad:</strong> ${launch.pad.name}</p>
     `;
     container.appendChild(launchElement);
   });
 }
-
-// Initialize the app
-document.addEventListener('DOMContentLoaded', () => {
-  // Create containers for upcoming and recent launches
-  const appContainer = document.getElementById('launches');
-  appContainer.innerHTML = `
-    <div id="recent" class="half-screen"></div>
-    <div id="upcoming" class="half-screen"></div>
-  `;
-
-  // Theme buttons
-  const spacexButton = document.getElementById('spacex-theme');
-  const spaceforceButton = document.getElementById('spaceforce-theme');
-  const californiaButton = document.getElementById('california-theme');
-
-  // Add event listeners to change themes
-  spacexButton.addEventListener('click', () => {
-    document.body.className = 'spacex';
-  });
-
-  spaceforceButton.addEventListener('click', () => {
-    document.body.className = 'spaceforce';
-  });
-
-  californiaButton.addEventListener('click', () => {
-    document.body.className = 'california';
-  });
-
-  fetchLaunchData();
-});

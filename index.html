@@ -3,26 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SpaceX Launch Data</title>
+  <title>Launch Data</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="app">
-    <h1>SpaceX Launch Data</h1>
-    <div id="columns">
-      <div id="recent" class="column">
-        <h2>Recent Launches</h2>
-        <p>Loading...</p>
-      </div>
-      <div id="all" class="column">
-        <h2>All Launches</h2>
-        <p>Loading...</p>
-      </div>
-      <div id="upcoming" class="column">
-        <h2>Upcoming Launches</h2>
-        <p>Loading...</p>
-      </div>
+    <h1>Launch Data</h1>
+    <div id="tabs">
+      <button class="tab-button active" data-tab="recent">Recent Launches</button>
+      <button class="tab-button" data-tab="upcoming">Upcoming Launches</button>
+    </div>
+    <div id="recent" class="tab-content active">
+      <h2>Recent Launches</h2>
+      <p>Loading...</p>
+    </div>
+    <div id="upcoming" class="tab-content">
+      <h2>Upcoming Launches</h2>
+      <p>Loading...</p>
     </div>
   </div>
   <script src="app.js"></script>
