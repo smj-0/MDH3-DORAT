@@ -1,0 +1,168 @@
+/* General body styling */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #0b0d17, #1c1e26); /* Dark theme */
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* App container */
+#app {
+  text-align: center;
+  width: 90%;
+  max-width: 1200px;
+}
+
+/* Columns container */
+#columns {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Individual columns */
+.column {
+  flex: 1;
+  padding: 20px;
+  border: 1px solid #2d3748;
+  border-radius: 10px;
+  background-color: #1c1e26;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+/* Section titles */
+.column h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #ffffff;
+  border-bottom: 2px solid #0077c8;
+  padding-bottom: 5px;
+}
+
+/* Launch item styling */
+.launch {
+  border-bottom: 1px solid #2d3748;
+  padding: 10px 0;
+}
+
+.launch:last-child {
+  border-bottom: none;
+}
+
+.launch h3 {
+  font-size: 18px;
+  margin: 0 0 5px;
+  color: #ffffff;
+}
+
+.launch p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #d1d5db;
+}
+
+/* Scrollbar styling */
+.column::-webkit-scrollbar {
+  width: 8px;
+}
+
+.column::-webkit-scrollbar-thumb {
+  background-color: #0077c8;
+  border-radius: 4px;
+}
+
+.column::-webkit-scrollbar-track {
+  background-color: #1c1e26;
+}
+
+/* Theme buttons */
+#theme-buttons {
+  margin-bottom: 20px;
+}
+
+#theme-buttons button {
+  padding: 10px 15px;
+  margin: 0 5px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+#theme-buttons button:hover {
+  opacity: 0.8;
+}
+
+/* Button styling */
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff6a88, #ffcc70); /* Fun gradient */
+  color: #ffffff;
+  border: none;
+  border-radius: 25px; /* Rounded for a playful look */
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.1); /* Slight zoom effect */
+  background: linear-gradient(135deg, #ff85a1, #ffd280); /* Lighter hover gradient */
+}
+
+/* SpaceX Theme */
+body.spacex {
+  background: linear-gradient(135deg, #0b0d17, #1c1e26); /* Dark SpaceX theme */
+  color: #ffffff;
+}
+
+body.spacex .half-screen {
+  background-color: #1c1e26;
+  border: 1px solid #2d3748;
+}
+
+body.spacex h2 {
+  color: #ffffff;
+  border-bottom: 2px solid #0077c8;
+}
+
+/* Space Force Theme */
+body.spaceforce {
+  background: linear-gradient(135deg, #005288, #1c1e26); /* Space Force blue */
+  color: #ffffff;
+}
+
+body.spaceforce .half-screen {
+  background-color: #1f2937;
+  border: 1px solid #005288;
+}
+
+body.spaceforce h2 {
+  color: #ffffff;
+  border-bottom: 2px solid #ffffff;
+}
+
+/* California Gurls Theme */
+body.california {
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4); /* Bright pastel gradient */
+  color: #4a4a4a;
+}
+
+body.california .half-screen {
+  background-color: #ffffff;
+  border: 2px solid #ff85a1;
+}
+
+body.california h2 {
+  color: #ff6a88;
+  border-bottom: 2px solid #ffcc70;
+}
