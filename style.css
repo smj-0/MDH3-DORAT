@@ -84,6 +84,15 @@ body {
   padding-bottom: 5px;
 }
 
+/* Section titles */
+#upcoming h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #ffffff;
+  border-bottom: 2px solid #0077c8;
+  padding-bottom: 5px;
+}
+
 /* Launch item styling */
 .launch {
   border-bottom: 1px solid #2d3748;
@@ -117,5 +126,19 @@ body {
 }
 
 .column::-webkit-scrollbar-track {
+  background-color: #1c1e26;
+}
+
+/* Scrollbar styling */
+#upcoming::-webkit-scrollbar {
+  width: 8px;
+}
+
+#upcoming::-webkit-scrollbar-thumb {
+  background-color: #0077c8;
+  border-radius: 4px;
+}
+
+#upcoming::-webkit-scrollbar-track {
   background-color: #1c1e26;
 }

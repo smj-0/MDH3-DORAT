@@ -1,61 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
-  setupTabs();
-  fetchLaunchData();
+  fetchUpcomingLaunches();
 });
 
-// Setup tab switching
-function setupTabs() {
-  const tabButtons = document.querySelectorAll('.tab-button');
-  const tabContents = document.querySelectorAll('.tab-content');
-
-  tabButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      // Remove active class from all buttons and contents
-      tabButtons.forEach((btn) => btn.classList.remove('active'));
-      tabContents.forEach((content) => content.classList.remove('active'));
-
-      // Add active class to the clicked button and corresponding content
-      button.classList.add('active');
-      const tabId = button.getAttribute('data-tab');
-      document.getElementById(tabId).classList.add('active');
-    });
-  });
-}
-
-// Fetch recent and upcoming launches from the Launch Library 2 API
-async function fetchLaunchData() {
-  const upcomingApiUrl = 'https://llapi.thespacedevs.com/2.2.0/launch/upcoming/?limit=5';
-  const recentApiUrl = 'https://llapi.thespacedevs.com/2.2.0/launch/previous/?limit=5';
+// Fetch upcoming launches from the RocketLaunch.Live API
+async function fetchUpcomingLaunches() {
+  const upcomingApiUrl = 'https://fdo.rocketlaunch.live/json/launches/next/5';
 
   try {
     // Fetch upcoming launches
-    const upcomingResponse = await fetch(upcomingApiUrl);
-    if (!upcomingResponse.ok) {
-      throw new Error(`HTTP error! status: ${upcomingResponse.status}`);
+    const response = await fetch(upcomingApiUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const upcomingData = await upcomingResponse.json();
-    const upcomingLaunches = upcomingData.results;
-
-    // Fetch recent launches
-    const recentResponse = await fetch(recentApiUrl);
-    if (!recentResponse.ok) {
-      throw new Error(`HTTP error! status: ${recentResponse.status}`);
-    }
-    const recentData = await recentResponse.json();
-    const recentLaunches = recentData.results;
+    const data = await response.json();
+    const upcomingLaunches = data.result;
 
     // Display the launches
-    displayLaunchData(recentLaunches, 'recent');
-    displayLaunchData(upcomingLaunches, 'upcoming');
+    displayLaunchData(upcomingLaunches);
   } catch (error) {
-    console.error('Error fetching launch data:', error);
-    document.getElementById('columns').innerHTML = `<p>Failed to load launch data: ${error.message}</p>`;
+    console.error('Error fetching upcoming launches:', error);
+    document.getElementById('upcoming').innerHTML = `<p>Failed to load launch data: ${error.message}</p>`;
   }
 }
 
-// Display launch data in the appropriate column
-function displayLaunchData(launches, containerId) {
-  const container = document.getElementById(containerId);
+// Display upcoming launch data
+function displayLaunchData(launches) {
+  const container = document.getElementById('upcoming');
   container.innerHTML = ''; // Clear existing content
 
   launches.forEach((launch) => {
@@ -63,9 +33,9 @@ function displayLaunchData(launches, containerId) {
     launchElement.className = 'launch';
     launchElement.innerHTML = `
       <h3>${launch.name}</h3>
-      <p><strong>NET:</strong> ${new Date(launch.net).toLocaleString()}</p>
-      <p><strong>Rocket:</strong> ${launch.rocket.configuration.name}</p>
-      <p><strong>Launch Pad:</strong> ${launch.pad.name}</p>
+      <p><strong>NET:</strong> ${new Date(launch.sort_date * 1000).toLocaleString()}</p>
+      <p><strong>Rocket:</strong> ${launch.vehicle.name}</p>
+      <p><strong>Launch Pad:</strong> ${launch.pad.location.name}</p>
     `;
     container.appendChild(launchElement);
   });
