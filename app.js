@@ -69,7 +69,7 @@
     }
 
     .launch h3 {
-      font-size: 20px;
+      font-size: 18px;
       margin: 0 0 5px;
       color: #00d1ff; /* Bright cyan for launch names */
     }
