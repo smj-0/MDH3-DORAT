@@ -1,46 +1,71 @@
-/* General body styling */
-body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(135deg, #0b0d17, #1c1e26); /* Dark theme */
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upcoming Launches</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <h1>Upcoming Launches</h1>
+    <div id="upcoming" class="tab-content active">
+      <h2>Upcoming Launches</h2>
+      <p>Loading...</p>
+    </div>
+    <!-- Button to link to the music video -->
+    <button id="music-video-button" onclick="goToMusicVideo()">🎵 Watch California Gurls 🎵</button>
+  </div>
+  <script>
+    function goToMusicVideo() {
+      window.open('https://www.youtube.com/watch?v=F57P9C4SAW4', '_blank');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchUpcomingLaunches();
+    });
 
-/* App container */
-#app {
-  text-align: center;
-  width: 90%;
-  max-width: 1200px;
-}
+    // Fetch upcoming launches from the RocketLaunch.Live API
+    async function fetchUpcomingLaunches() {
+      const upcomingApiUrl = 'https://fdo.rocketlaunch.live/json/launches/next/5';
 
-/* Tabs container */
-#tabs {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
+      try {
+        // Fetch upcoming launches
+        const response = await fetch(upcomingApiUrl);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        const upcomingLaunches = data.result;
 
-.tab-button {
-  padding: 10px 20px;
-  margin: 0 5px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #1c1e26;
-  color: #ffffff;
-  border: 1px solid #2d3748;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
+        // Display the launches
+        displayLaunchData(upcomingLaunches);
+      } catch (error) {
+        document.getElementById('upcoming').innerHTML = `<p>Failed to load launch data: ${error.message}</p>`;
+        console.error('Error fetching upcoming launches:', error);
+      }
+    }
 
-.tab-button.active {
-  background-color: #0077c8;
-  border-color: #0077c8;
-}
+    function displayLaunchData(launches) {
+      // Display upcoming launch data
+      const container = document.getElementById('upcoming');
+      container.innerHTML = ''; // Clear existing content
+
+      launches.forEach((launch) => {
+        const launchElement = document.createElement('div');
+        launchElement.className = 'launch';
+        launchElement.innerHTML = `
+          <h3>${launch.name}</h3>
+          <p><strong>NET:</strong> ${new Date(launch.sort_date * 1000).toLocaleString()}</p>
+          <p><strong>Rocket:</strong> ${launch.vehicle.name}</p>
+          <p><strong>Launch Pad:</strong> ${launch.pad.location.name}</p>
+        `;
+        container.appendChild(launchElement);
+      });
+    }
+  </script>
+</body>
+</html>
 
 .tab-button:hover {
   background-color: #005288;
@@ -67,10 +92,10 @@ body {
 .column {
   flex: 1;
   padding: 20px;
-  border: 1px solid #2d3748;
-  border-radius: 10px;
-  background-color: #1c1e26;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  border: 2px solid #ff85a1; /* Bright pink border */
+  border-radius: 15px;
+  background-color: #ffffff; /* White background for contrast */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
   overflow-y: auto;
   max-height: 70vh;
 }
@@ -86,16 +111,16 @@ body {
 
 /* Section titles */
 #upcoming h2 {
-  font-size: 20px;
+  font-size: 22px;
   margin-bottom: 15px;
-  color: #ffffff;
-  border-bottom: 2px solid #0077c8;
+  color: #ff6a88; /* Bright pink for titles */
+  border-bottom: 2px solid #ffcc70; /* Accent line */
   padding-bottom: 5px;
 }
 
 /* Launch item styling */
 .launch {
-  border-bottom: 1px solid #2d3748;
+  border-bottom: 1px solid #fad0c4; /* Subtle pastel divider */
   padding: 10px 0;
 }
 
@@ -106,13 +131,13 @@ body {
 .launch h3 {
   font-size: 18px;
   margin: 0 0 5px;
-  color: #ffffff;
+  color: #ff6a88; /* Bright pink for launch names */
 }
 
 .launch p {
   margin: 5px 0;
   font-size: 14px;
-  color: #d1d5db;
+  color: #4a4a4a; /* Neutral gray for secondary text */
 }
 
 /* Scrollbar styling */
@@ -135,10 +160,30 @@ body {
 }
 
 #upcoming::-webkit-scrollbar-thumb {
-  background-color: #0077c8;
+  background-color: #ff6a88; /* Bright pink scrollbar */
   border-radius: 4px;
 }
 
 #upcoming::-webkit-scrollbar-track {
-  background-color: #1c1e26;
+  background-color: #fad0c4; /* Pastel pink track */
+}
+
+/* Music video button styling */
+#music-video-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff6a88, #ffcc70); /* Fun gradient */
+  color: #ffffff;
+  border: none;
+  border-radius: 25px; /* Rounded for a playful look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+#music-video-button:hover {
+  transform: scale(1.1); /* Slight zoom effect */
+  background: linear-gradient(135deg, #ff85a1, #ffd280); /* Lighter hover gradient */
 }
